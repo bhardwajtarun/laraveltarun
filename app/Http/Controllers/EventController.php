@@ -16,14 +16,17 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = DB::table('events')->join('workshops', 'events.id', '=', 'workshops.event_id');
+        $events = Event::select('events.*','workshops.*')->join('workshops', 'events.id', '=', 'workshops.event_id')->get();
+
+       // $events = DB::table('events')->join('workshops', 'events.id', '=', 'workshops.event_id');
         return $events;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-  \
+    public function futureevents()
+    {
+        $from = date("Y-m-d");
+        $data = Event::select('events.*','workshops.*')->join('workshops', 'events.id', '=', 'workshops.event_id')->where('workshops.start','>', $from)->get();
+        return $data;
+    }
+  
 }
